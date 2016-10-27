@@ -114,6 +114,7 @@ public class VmInstanceManagerImpl extends AbstractService implements
     private List<String> attachVolumeWorkFlowElements;
     private List<String> expungeVmWorkFlowElements;
     private List<String> changeVmPasswdFlowElements;
+    private List<String> setVmRootPasswordFlowElements;
     private FlowChainBuilder createVmFlowBuilder;
     private FlowChainBuilder stopVmFlowBuilder;
     private FlowChainBuilder rebootVmFlowBuilder;
@@ -125,6 +126,7 @@ public class VmInstanceManagerImpl extends AbstractService implements
     private FlowChainBuilder detachIsoFlowBuilder;
     private FlowChainBuilder expungeVmFlowBuilder;
     private FlowChainBuilder changeVmPasswdFlowBuilder;
+    private FlowChainBuilder setVmRootPasswordFlowBuilder;
     private static final Set<Class> allowedMessageAfterSoftDeletion = new HashSet<>();
     private Future<Void> expungeVmTask;
 
@@ -754,6 +756,7 @@ public class VmInstanceManagerImpl extends AbstractService implements
         detachIsoFlowBuilder = FlowChainBuilder.newBuilder().setFlowClassNames(detachIsoWorkFlowElements).construct();
         expungeVmFlowBuilder = FlowChainBuilder.newBuilder().setFlowClassNames(expungeVmWorkFlowElements).construct();
         changeVmPasswdFlowBuilder = FlowChainBuilder.newBuilder().setFlowClassNames(changeVmPasswdFlowElements).construct();
+        setVmRootPasswordFlowBuilder = FlowChainBuilder.newBuilder().setFlowClassNames(setVmRootPasswordFlowElements).construct();
     }
 
     private void populateExtensions() {
@@ -1058,8 +1061,13 @@ public class VmInstanceManagerImpl extends AbstractService implements
     }
 
     @Override
-    public FlowChain getChangeVmPasswordWorkFlowChain(VmAccountPerference account) {
+    public FlowChain getChangeVmPasswordWorkFlowChain() {
         return changeVmPasswdFlowBuilder.build();
+    }
+
+    @Override
+    public FlowChain getSetVmRootPasswordWorkFlowChain() {
+        return setVmRootPasswordFlowBuilder.build();
     }
 
     public void setCreateVmWorkFlowElements(List<String> createVmWorkFlowElements) {
@@ -1104,6 +1112,10 @@ public class VmInstanceManagerImpl extends AbstractService implements
 
     public void setChangeVmPasswdFlowElements(List<String> changeVmPasswdFlowElements) {
         this.changeVmPasswdFlowElements = changeVmPasswdFlowElements;
+    }
+
+    public void setSetVmRootPasswordFlowElements(List<String> setVmRootPasswordFlowElements) {
+        this.setVmRootPasswordFlowElements = setVmRootPasswordFlowElements;
     }
 
     @Override
